@@ -1,9 +1,8 @@
 package com.devsuperior.desafio2.desafio2.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -11,10 +10,27 @@ import java.util.Objects;
 public class Atividade {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String descricao;
     private Double preco;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tb_atividade_participante",
+            joinColumns = @JoinColumn(name = "atividade_id"),
+            inverseJoinColumns = @JoinColumn(name = "participante_id")
+    )
+    private List<Participante> participantes;
+
+    @OneToMany(mappedBy = "atividade")
+    private List<Bloco> blocos;
+
 
     public Atividade() {
     }
@@ -58,6 +74,30 @@ public class Atividade {
         this.preco = preco;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public List<Participante> getParticipantes() {
+        return participantes;
+    }
+
+    public void setParticipantes(List<Participante> participantes) {
+        this.participantes = participantes;
+    }
+
+    public List<Bloco> getBlocos() {
+        return blocos;
+    }
+
+    public void setBlocos(List<Bloco> blocos) {
+        this.blocos = blocos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,7 +108,7 @@ public class Atividade {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id != null ? id : 0);
     }
 
 

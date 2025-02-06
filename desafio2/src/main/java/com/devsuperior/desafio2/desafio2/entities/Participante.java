@@ -1,9 +1,8 @@
 package com.devsuperior.desafio2.desafio2.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -11,9 +10,13 @@ import java.util.Objects;
 public class Participante {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String email;
+
+    @ManyToMany(mappedBy = "participantes")
+    private List<Atividade> atividades;
 
     public Participante() {
     }
@@ -48,6 +51,14 @@ public class Participante {
         this.email = email;
     }
 
+    public List<Atividade> getAtividades() {
+        return atividades;
+    }
+
+    public void setAtividades(List<Atividade> atividades) {
+        this.atividades = atividades;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,6 +69,7 @@ public class Participante {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id != null ? id : 0);
     }
+
 }
