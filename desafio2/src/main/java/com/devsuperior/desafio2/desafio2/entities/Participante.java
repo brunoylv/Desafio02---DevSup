@@ -10,7 +10,6 @@ import java.util.Objects;
 public class Participante {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String email;
